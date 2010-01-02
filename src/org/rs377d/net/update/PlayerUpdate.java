@@ -60,19 +60,22 @@ public class PlayerUpdate implements Runnable
 			updateThisPlayerMovement(packet);
 			updatePlayer(updateBlock, player, false, true);
 			packet.putBits(8, player.getPlayerList().size());
-			for (Iterator<Player> it$ = player.getPlayerList().iterator(); it$.hasNext();)
+			synchronized (player.getPlayerList())
 			{
-				Player player = it$.next();
-				if (this.player.getPosition().isWithinDistance(player.getPosition()))
+				for (Iterator<Player> it$ = player.getPlayerList().iterator(); it$.hasNext();)
 				{
-					updatePlayerMovement(packet, player);
-					if (player.getUpdateFlags().update())
-						updatePlayer(updateBlock, player, false, false);
-				} else
-				{
-					this.player.getPlayerList().remove(player);
-					packet.putBits(1, 1);
-					packet.putBits(2, 3);
+					Player player = it$.next();
+					if (this.player.getPosition().isWithinDistance(player.getPosition()))
+					{
+						updatePlayerMovement(packet, player);
+						if (player.getUpdateFlags().update())
+							updatePlayer(updateBlock, player, false, false);
+					} else
+					{
+						this.player.getPlayerList().remove(player);
+						packet.putBits(1, 1);
+						packet.putBits(2, 3);
+					}
 				}
 			}
 			for (Iterator<Player> it$ = World.getSingleton().getPlayerList().iterator(); it$.hasNext();)
@@ -82,7 +85,10 @@ public class PlayerUpdate implements Runnable
 					break;
 				if (player == this.player || this.player.getPlayerList().contains(player))
 					continue;
-				this.player.getPlayerList().add(player);
+				synchronized (this.player.getPlayerList())
+				{
+					this.player.getPlayerList().add(player);
+				}
 				this.player.getActionSender().appendUpdateAdd(player, packet);
 				updatePlayer(updateBlock, player, true, false);
 			}
