@@ -29,19 +29,22 @@ public class NpcUpdate implements Runnable
 			Rs2PacketBuilder packet = new Rs2PacketBuilder(71, Type.VARIABLE_SHORT);
 			packet.startBitAccess();
 			packet.putBits(8, player.getNpcList().size());
-			for (Iterator<Npc> it$ = player.getNpcList().iterator(); it$.hasNext();)
+			synchronized (player.getNpcList())
 			{
-				Npc npc = it$.next();
-				if (World.getSingleton().getNpcList().contains(npc) && !npc.getUpdateFlags().teleported() && npc.getPosition().isWithinDistance(player.getPosition()))
+				for (Iterator<Npc> it$ = player.getNpcList().iterator(); it$.hasNext();)
 				{
-					updateNpcMovement(packet, npc);
-					if (npc.getUpdateFlags().update())
-						updateNpc(updateBlock, npc);
-				} else
-				{
-					it$.remove();
-					packet.putBits(1, 1);
-					packet.putBits(2, 3);
+					Npc npc = it$.next();
+					if (World.getSingleton().getNpcList().contains(npc) && !npc.getUpdateFlags().teleported() && npc.getPosition().isWithinDistance(player.getPosition()))
+					{
+						updateNpcMovement(packet, npc);
+						if (npc.getUpdateFlags().update())
+							updateNpc(updateBlock, npc);
+					} else
+					{
+						it$.remove();
+						packet.putBits(1, 1);
+						packet.putBits(2, 3);
+					}
 				}
 			}
 			for (Iterator<Npc> it$ = World.getSingleton().getNpcList().iterator(); it$.hasNext();)
@@ -53,7 +56,10 @@ public class NpcUpdate implements Runnable
 					continue;
 				if (!player.getPosition().isWithinDistance(npc.getPosition()))
 					continue;
-				player.getNpcList().add(npc);
+				synchronized (player.getNpcList())
+				{
+					player.getNpcList().add(npc);
+				}
 				player.getActionSender().appendUpdateAdd(npc, packet);
 				if (npc.getUpdateFlags().update())
 					updateNpc(updateBlock, npc);

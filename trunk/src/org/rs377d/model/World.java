@@ -31,7 +31,7 @@ public class World
 	private static final World singleton = new World();
 	private EntityList<Player> playerList = new EntityList<Player>(Configuration.MAX_PLAYERS);
 	private EntityList<Npc> npcList = new EntityList<Npc>(Configuration.MAX_NPCS);
-	
+
 	{
 		npcList.add(new Npc(1));
 	}
@@ -59,10 +59,7 @@ public class World
 		for (Iterator<Player> it$ = playerList.iterator(); it$.hasNext();)
 		{
 			Player p = it$.next();
-			synchronized (p.getPlayerList())
-			{
-				p.getPlayerList().remove(player);
-			}
+			p.getPlayerList().remove(player);
 		}
 		synchronized (playerList)
 		{
@@ -90,7 +87,7 @@ public class World
 	{
 		return playerList;
 	}
-	
+
 	public EntityList<Npc> getNpcList()
 	{
 		return npcList;

@@ -98,13 +98,20 @@ public class ServerHandler extends IoHandlerAdapter
 	}
 
 	@Override
-	public void sessionClosed(IoSession session)
+	public void sessionClosed(final IoSession session)
 	{
-		System.out.println("Closing connection from: " + session.getRemoteAddress());
-		Player player = (Player) session.getAttribute("player");
-		if (player == null)
-			return;
-		World.getSingleton().unregisterPlayer(player);
+		ServerExecutor.getLogicExecutor().submit(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				System.out.println("Closing connection from: " + session.getRemoteAddress());
+				Player player = (Player) session.getAttribute("player");
+				if (player == null)
+					return;
+				World.getSingleton().unregisterPlayer(player);
+			}
+		});
 	}
 
 	public static ServerHandler getSingleton()
