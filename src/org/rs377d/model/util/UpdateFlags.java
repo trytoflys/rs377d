@@ -46,39 +46,39 @@ public class UpdateFlags
 		switch (flag)
 		{
 		case UPDATE:
-			flags.set(Flag.UPDATE.val, true);
+			flags.set(Flag.UPDATE.ordinal(), true);
 			break;
 		case TELEPORTED:
-			flags.set(Flag.TELEPORTED.val, true);
+			flags.set(Flag.TELEPORTED.ordinal(), true);
 			break;
 		case MAP_REGION_CHANGED:
-			flags.set(Flag.MAP_REGION_CHANGED.val, true);
+			flags.set(Flag.MAP_REGION_CHANGED.ordinal(), true);
 			break;
 		case ANIMATION:
 			mask |= entity instanceof Player ? 0x8 : 0x2;
-			flags.set(Flag.UPDATE.val, true);
-			flags.set(Flag.ANIMATION.val, true);
+			flags.set(Flag.UPDATE.ordinal(), true);
+			flags.set(Flag.ANIMATION.ordinal(), true);
 			break;
 		case CHAT:
 			mask |= entity instanceof Player ? 0x40 : 0x20;
-			flags.set(Flag.UPDATE.val, true);
-			flags.set(Flag.CHAT.val, true);
+			flags.set(Flag.UPDATE.ordinal(), true);
+			flags.set(Flag.CHAT.ordinal(), true);
 			break;
 		case APPEARANCE:
 			// player only
 			mask |= 0x4;
-			flags.set(Flag.UPDATE.val, true);
-			flags.set(Flag.APPEARANCE.val, true);
+			flags.set(Flag.UPDATE.ordinal(), true);
+			flags.set(Flag.APPEARANCE.ordinal(), true);
 			break;
 		case HIT:
 			mask |= entity instanceof Player ? 0x80 : 0x10;
-			flags.set(Flag.UPDATE.val, true);
-			flags.set(Flag.HIT.val, true);
+			flags.set(Flag.UPDATE.ordinal(), true);
+			flags.set(Flag.HIT.ordinal(), true);
 			break;
 		case DIRECTION:
 			mask |= entity instanceof Player ? 0x2 : 0x40;
-			flags.set(Flag.UPDATE.val, true);
-			flags.set(Flag.DIRECTION.val, true);
+			flags.set(Flag.UPDATE.ordinal(), true);
+			flags.set(Flag.DIRECTION.ordinal(), true);
 			break;
 		}
 	}
@@ -90,55 +90,47 @@ public class UpdateFlags
 
 	public boolean update()
 	{
-		return flags.get(Flag.UPDATE.val);
+		return flags.get(Flag.UPDATE.ordinal());
 	}
 
 	public boolean animation()
 	{
-		return flags.get(Flag.ANIMATION.val);
+		return flags.get(Flag.ANIMATION.ordinal());
 	}
 
 	public boolean chat()
 	{
-		return flags.get(Flag.CHAT.val);
+		return flags.get(Flag.CHAT.ordinal());
 	}
 
 	public boolean appearance()
 	{
-		return flags.get(Flag.APPEARANCE.val);
+		return flags.get(Flag.APPEARANCE.ordinal());
 	}
 
 	public boolean hit()
 	{
-		return flags.get(Flag.HIT.val);
+		return flags.get(Flag.HIT.ordinal());
 	}
 
 	public boolean direction()
 	{
-		return flags.get(Flag.DIRECTION.val);
+		return flags.get(Flag.DIRECTION.ordinal());
 	}
 
 	public boolean teleported()
 	{
-		return flags.get(Flag.TELEPORTED.val);
+		return flags.get(Flag.TELEPORTED.ordinal());
 	}
 
 	public boolean mapRegionChanged()
 	{
-		return flags.get(Flag.MAP_REGION_CHANGED.val);
+		return flags.get(Flag.MAP_REGION_CHANGED.ordinal());
 	}
 
 	public enum Flag
 	{
-		UPDATE(0), TELEPORTED(1), MAP_REGION_CHANGED(2), ANIMATION(3), CHAT(4), APPEARANCE(5), HIT(6), DIRECTION(7);
-
-		public final int val;
-
-		Flag(int val)
-		{
-			this.val = val;
-		}
-
+		UPDATE, TELEPORTED, MAP_REGION_CHANGED, ANIMATION, CHAT, APPEARANCE, HIT, DIRECTION
 	}
 
 }
