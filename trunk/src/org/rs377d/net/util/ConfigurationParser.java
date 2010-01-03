@@ -49,6 +49,7 @@ public class ConfigurationParser
 		{
 			Configuration.RSA_KEY_FILE = miscElement.getAttribute("RSA_KEY_FILE");
 			Configuration.SCRIPTS_DIR = new File(miscElement.getAttribute("SCRIPTS_DIR"));
+			Configuration.ITEM_DEFINITIONS_FILE = miscElement.getAttribute("ITEM_DEFINITIONS_FILE");
 		}
 
 		Element chainsElement = (Element) doc.getElementsByTagName("EVENT_LISTENER_CHAINS").item(0);

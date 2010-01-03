@@ -61,6 +61,7 @@
 	<MISC
 		RSA_KEY_FILE="./data/private.key"
 		SCRIPTS_DIR="./scripts/"
+		ITEM_DEFINITIONS_FILE="./data/itemDefinitions.bin"
 	/>
 	
 	<!--
