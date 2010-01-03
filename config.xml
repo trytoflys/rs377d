@@ -1,5 +1,5 @@
 <!-- EDIT THIS FILE WITH A TEXT EDITOR (i.e. notepad) -->
-<config>
+<CONFIG>
 
 	<!--
 	  * Main server configuration block.
@@ -105,4 +105,4 @@
 		
 	</EVENT_LISTENER_CHAINS>
 
-</config>
+</CONFIG>
