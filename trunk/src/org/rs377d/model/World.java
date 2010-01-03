@@ -19,9 +19,12 @@
 package org.rs377d.model;
 
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import org.rs377d.Configuration;
+import org.rs377d.ServerExecutor;
 import org.rs377d.model.npc.Npc;
+import org.rs377d.model.npc.NpcMovementGenerator;
 import org.rs377d.model.player.Player;
 import org.rs377d.model.util.EntityList;
 
@@ -33,7 +36,7 @@ public class World
 	private EntityList<Npc> npcList = new EntityList<Npc>(Configuration.MAX_NPCS);
 
 	{
-		npcList.add(new Npc(1));
+		ServerExecutor.getLogicExecutor().scheduleWithFixedDelay(new NpcMovementGenerator(), 0, 5, TimeUnit.SECONDS);
 	}
 
 	public void registerPlayer(Player player)

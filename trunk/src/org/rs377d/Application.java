@@ -21,10 +21,11 @@ package org.rs377d;
 import java.util.concurrent.TimeUnit;
 
 import org.rs377d.model.util.ItemDefinition;
+import org.rs377d.model.util.NpcSpawnParser;
 import org.rs377d.net.ServerHandler;
 import org.rs377d.net.update.PlayerUpdateCoordinator;
-import org.rs377d.net.util.ConfigurationParser;
 import org.rs377d.net.util.RsaDecoder;
+import org.rs377d.util.ConfigurationParser;
 import org.rs377d.util.DefaultLogger;
 import org.rs377d.util.PythonImpl;
 
@@ -38,6 +39,7 @@ public class Application
 		try
 		{
 			ConfigurationParser.parse();
+			NpcSpawnParser.parse();
 			ItemDefinition.init();
 			PythonImpl.loadScripts(Configuration.SCRIPTS_DIR);
 			PythonImpl.func("configure");

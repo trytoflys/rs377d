@@ -18,6 +18,9 @@
 
 package org.rs377d.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.rs377d.Configuration;
 import org.rs377d.model.util.Position;
 import org.rs377d.model.util.UpdateFlags;
@@ -34,6 +37,7 @@ public abstract class Entity
 	private Position position;
 	private int walkDir, runDir;
 	private int index = -1;
+	private Map<String, Object> attributeMap = new HashMap<String, Object>();
 
 	public Entity()
 	{
@@ -41,6 +45,21 @@ public abstract class Entity
 		position = new Position(Configuration.DEFAULT_X, Configuration.DEFAULT_Y, Configuration.DEFAULT_Z);
 		walkingManager = new WalkingManager(this);
 		lastRegion = new Position(position.getX(), position.getY(), position.getZ());
+	}
+	
+	public void setPosition(Position position)
+	{
+		this.position = position;
+	}
+
+	public void setAttribute(String name, Object attribute)
+	{
+		attributeMap.put(name, attribute);
+	}
+
+	public Object getAttribute(String name)
+	{
+		return attributeMap.get(name);
 	}
 
 	public void saveLastRegion()
