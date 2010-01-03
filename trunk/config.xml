@@ -57,6 +57,9 @@
 	  * SCRIPTS_DIR:
 	  * 	The directory for the server to recursively load Python game-content
 	  * 	scripts from.
+	  *
+	  * ITEM_DEFINITIONS_FILE:
+	  * 	The file which contains item definitions (in binary format).
 	  -->
 	<MISC
 		RSA_KEY_FILE="./data/private.key"
