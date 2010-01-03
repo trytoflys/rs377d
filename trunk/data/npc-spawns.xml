@@ -15,7 +15,7 @@
 		/>
 	</SPAWN>
 	
-		<SPAWN ID="1">
+	<SPAWN ID="1">
 		<STATS
 			HEALTH="7"
 			MAX_HIT="1"
