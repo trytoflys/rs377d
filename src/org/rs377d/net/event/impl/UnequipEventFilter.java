@@ -24,7 +24,7 @@ public class UnequipEventFilter implements EventListener
 		Item item = equipment.get(slot);
 		if (item == null)
 			return;
-		if (equipment.get(slot).getID() != itemID)
+		if (item.getID() != itemID)
 			return;
 
 		packet.getPayload().rewind();
