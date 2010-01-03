@@ -71,7 +71,7 @@ public class ServerHandler extends IoHandlerAdapter
 			@Override
 			public void run()
 			{
-				Thread.currentThread().setName("EventChainProcessor");
+				Thread.currentThread().setName("EventProcessor");
 				EventListenerChain chain = EventListenerManager.getPacketHandlerChain(packet);
 				chain.prepareChain();
 				try

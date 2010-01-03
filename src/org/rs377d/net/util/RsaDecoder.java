@@ -31,7 +31,7 @@ public class RsaDecoder
 	{
 		try
 		{
-			ObjectInputStream oin = new ObjectInputStream(new FileInputStream("./data/private.key"));
+			ObjectInputStream oin = new ObjectInputStream(new FileInputStream(Configuration.RSA_KEY_FILE));
 			Configuration.RSA_N = (BigInteger) oin.readObject();
 			Configuration.RSA_D = (BigInteger) oin.readObject();
 		} catch (Exception ex)
