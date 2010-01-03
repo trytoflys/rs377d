@@ -5,6 +5,8 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel.MapMode;
 
+import org.rs377d.Configuration;
+
 /**
  * The item definition manager.
  * 
@@ -27,7 +29,7 @@ public class ItemDefinition
 		{
 			throw new IllegalStateException("Definitions already loaded.");
 		}
-		RandomAccessFile raf = new RandomAccessFile("data/itemDefinitions.bin", "r");
+		RandomAccessFile raf = new RandomAccessFile(Configuration.ITEM_DEFINITIONS_FILE, "r");
 		try
 		{
 			ByteBuffer buffer = raf.getChannel().map(MapMode.READ_ONLY, 0, raf.length());
