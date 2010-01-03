@@ -24,16 +24,21 @@ import org.rs377d.net.ServerHandler;
 import org.rs377d.net.update.PlayerUpdateCoordinator;
 import org.rs377d.net.util.RsaDecoder;
 import org.rs377d.util.DefaultLogger;
+import org.rs377d.util.PythonImpl;
 
 public class Application
 {
 
 	public static void main(String[] args)
 	{
+		
 		System.setOut(new DefaultLogger(System.out));
 		System.out.println("Starting RuneScape 377 Daemon...");
+		System.out.println("Loading Python scripts...");
 		try
 		{
+			PythonImpl.loadScripts(Configuration.SCRIPTS_DIR);
+			PythonImpl.func("configure");
 			ServerExecutor.getLogicExecutor().scheduleAtFixedRate(new PlayerUpdateCoordinator(), 0, Configuration.TICK_RATE, TimeUnit.MILLISECONDS);
 			RsaDecoder.loadRSAKeys();
 			ServerHandler.getSingleton().start();

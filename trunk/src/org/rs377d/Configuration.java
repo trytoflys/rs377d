@@ -18,6 +18,7 @@
 
 package org.rs377d;
 
+import java.io.File;
 import java.math.BigInteger;
 
 public class Configuration
@@ -33,6 +34,6 @@ public class Configuration
 	public static int DEFAULT_X = 3200;
 	public static int DEFAULT_Y = 3200;
 	public static int DEFAULT_Z = 0;
-	public static int MAX_CONNECTIONS_PER_IP = 1;
+	public static File SCRIPTS_DIR = new File("./scripts");
 
 }

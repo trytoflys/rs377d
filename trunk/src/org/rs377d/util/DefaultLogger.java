@@ -30,6 +30,7 @@ public class DefaultLogger extends PrintStream
 	private DefaultTimer timer = new DefaultTimer();
 	private Date cachedDate = new Date();
 	private DateFormat dateFormat = new SimpleDateFormat();
+	public static DefaultLogger OUT = new DefaultLogger(System.out);
 
 	public DefaultLogger(OutputStream out)
 	{
@@ -40,6 +41,12 @@ public class DefaultLogger extends PrintStream
 	public void print(String msg)
 	{
 		super.print(getPrefix() + msg);
+	}
+
+	public void write(String msg)
+	{
+		if (msg.getBytes()[0] != 10)
+			super.print(getPrefix() + msg + "\n");
 	}
 
 	private String getPrefix()
