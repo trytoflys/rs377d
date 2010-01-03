@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.mina.core.session.IoSession;
 import org.rs377d.model.Entity;
 import org.rs377d.model.npc.Npc;
+import org.rs377d.model.util.ItemContainer;
 import org.rs377d.model.util.EntityList;
 import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.util.ActionSender;
@@ -68,6 +69,8 @@ public class Player extends Entity
 		setAttribute("legsModel", 39);
 		setAttribute("feetModel", 44);
 		setAttribute("beardModel", 14);
+		setAttribute("inventory", new ItemContainer(28, false));
+		setAttribute("bank", new ItemContainer(496, true));
 	}
 	
 	public EntityList<Npc> getNpcList()
