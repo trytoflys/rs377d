@@ -35,5 +35,6 @@ public class Configuration
 	public static int DEFAULT_Y = 3200;
 	public static int DEFAULT_Z = 0;
 	public static File SCRIPTS_DIR = new File("./scripts");
+	public static String RSA_KEY_FILE = new String("./data/private.key");
 
 }
