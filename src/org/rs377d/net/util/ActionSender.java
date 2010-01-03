@@ -23,6 +23,7 @@ import org.rs377d.model.player.Player;
 import org.rs377d.model.util.ChatMessage;
 import org.rs377d.model.util.Item;
 import org.rs377d.model.util.ItemContainer;
+import org.rs377d.model.util.UpdateFlags.Flag;
 import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.Rs2PacketBuilder;
 import org.rs377d.net.Rs2Packet.Type;
@@ -61,21 +62,25 @@ public class ActionSender
 	public ActionSender sendInventory()
 	{
 		ItemContainer inventory = (ItemContainer) player.getAttribute("inventory");
-		inventory.add(new Item(1319, 1, false));
 		Rs2PacketBuilder packet = new Rs2PacketBuilder(206, Type.VARIABLE_SHORT);
 		packet.putShort(3214);
 		packet.putShort(inventory.getSize());
 		for (Item item : inventory.getItems())
 		{
 			if (item == null)
-				continue;
-			packet.putLEShortA(item.getID() + 1);
-			if (item.getAmount() >= 0xff)
 			{
-				packet.putByteC(255);
-				packet.putLEInt(item.getAmount());
+				packet.putLEShortA(0);
+				packet.putByteC(0);
 			} else
-				packet.putByteC(item.getAmount());
+			{
+				packet.putLEShortA(item.getID() + 1);
+				if (item.getAmount() >= 0xff)
+				{
+					packet.putByteC(255);
+					packet.putLEInt(item.getAmount());
+				} else
+					packet.putByteC(item.getAmount());
+			}
 		}
 		player.getSession().write(packet.toPacket());
 		return this;
@@ -83,30 +88,29 @@ public class ActionSender
 
 	public ActionSender sendEquipment()
 	{
+		player.getUpdateFlags().flag(Flag.APPEARANCE);
 		ItemContainer equipment = (ItemContainer) player.getAttribute("equipment");
-		equipment.set(ItemContainer.WEAPON_SLOT, new Item(4151, 1, false));
-		equipment.set(ItemContainer.HEAD_SLOT, new Item(1163, 1, false));
-		equipment.set(ItemContainer.BODY_SLOT, new Item(1127, 1, false));
-		equipment.set(ItemContainer.LEGS_SLOT, new Item(1079, 1, false));
-		equipment.set(ItemContainer.SHIELD_SLOT, new Item(1201, 1, false));
-		equipment.set(ItemContainer.FEET_SLOT, new Item(4131, 1, false));
-		equipment.set(ItemContainer.AMULET_SLOT, new Item(6585, 1, false));
-
 		Rs2PacketBuilder packet = new Rs2PacketBuilder(134, Type.VARIABLE_SHORT);
 		packet.putShort(1688);
 		for (int i = 0; i < equipment.getItems().length; i++)
 		{
 			Item item = equipment.getItems()[i];
 			if (item == null)
-				continue;
-			packet.put((byte) i);
-			packet.putShort(item.getID() + 1);
-			if (item.getAmount() >= 0xff)
 			{
-				packet.put((byte) 255);
-				packet.putInt(item.getAmount());
+				packet.put((byte) i);
+				packet.putShort(0);
+				packet.put((byte) 0);
 			} else
-				packet.put((byte) item.getAmount());
+			{
+				packet.put((byte) i);
+				packet.putShort(item.getID() + 1);
+				if (item.getAmount() >= 0xff)
+				{
+					packet.put((byte) 255);
+					packet.putInt(item.getAmount());
+				} else
+					packet.put((byte) item.getAmount());
+			}
 		}
 		player.getSession().write(packet.toPacket());
 		return this;
@@ -274,7 +278,6 @@ public class ActionSender
 	{
 		int yPos = npc.getPosition().getY() - player.getPosition().getY();
 		int xPos = npc.getPosition().getX() - player.getPosition().getX();
-		System.out.println("adding npc, dist from plr: " + xPos + ", " + yPos);
 		packet.putBits(14, npc.getIndex());
 		packet.putBits(1, npc.getUpdateFlags().update() ? 1 : 0);
 		packet.putBits(5, yPos);
