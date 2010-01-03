@@ -58,6 +58,7 @@ public class ServerHandler extends IoHandlerAdapter
 	@Override
 	public void exceptionCaught(IoSession session, Throwable t)
 	{
+		t.printStackTrace();
 		session.close(false);
 	}
 

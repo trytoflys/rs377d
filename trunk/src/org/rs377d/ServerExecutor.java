@@ -24,21 +24,21 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class ServerExecutor
 {
-	
+
 	private static ScheduledExecutorService logicExecutor;
 	private static ThreadPoolExecutor threadPool;
-	
+
 	static
 	{
 		logicExecutor = Executors.newSingleThreadScheduledExecutor();
 		threadPool = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	}
-	
+
 	public static ScheduledExecutorService getLogicExecutor()
 	{
 		return logicExecutor;
 	}
-	
+
 	public static ThreadPoolExecutor getThreadPool()
 	{
 		return threadPool;

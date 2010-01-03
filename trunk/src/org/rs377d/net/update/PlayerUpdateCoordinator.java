@@ -89,14 +89,14 @@ public class PlayerUpdateCoordinator implements Runnable
 			ServerExecutor.getThreadPool().submit(work);
 		latch.await(Configuration.TICK_RATE, TimeUnit.MILLISECONDS);
 	}
-	
+
 	private void dispatchUpdateWork() throws InterruptedException
 	{
 		latch = new CountDownLatch(playerUpdateList.size());
 		for (Runnable work : playerUpdateList)
 			ServerExecutor.getThreadPool().submit(work);
 		latch.await(Configuration.TICK_RATE, TimeUnit.MILLISECONDS);
-		
+
 		latch = new CountDownLatch(npcUpdateList.size());
 		for (Runnable work : npcUpdateList)
 			ServerExecutor.getThreadPool().submit(work);

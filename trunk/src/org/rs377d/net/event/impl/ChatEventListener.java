@@ -41,5 +41,5 @@ public class ChatEventListener implements EventListener
 		player.getUpdateFlags().flag(Flag.CHAT);
 		player.setAttribute("chatMessage", new ChatMessage(chatData, effects, color));
 	}
-	
+
 }

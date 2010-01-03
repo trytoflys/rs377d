@@ -21,9 +21,9 @@ package org.rs377d.net.util;
 import org.rs377d.model.npc.Npc;
 import org.rs377d.model.player.Player;
 import org.rs377d.model.util.ChatMessage;
+import org.rs377d.model.util.Equipment;
 import org.rs377d.model.util.Item;
-import org.rs377d.model.util.ItemContainer;
-import org.rs377d.model.util.UpdateFlags.Flag;
+import org.rs377d.model.util.Container;
 import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.Rs2PacketBuilder;
 import org.rs377d.net.Rs2Packet.Type;
@@ -50,7 +50,8 @@ public class ActionSender
 		sendWelcomeScreen();
 		sendInventory();
 		sendEquipment();
-		return sendMessage("Welcome to RuneScape.");
+		sendMessage("Welcome to RuneScape.");
+		return this;
 	}
 
 	public ActionSender sendMessage(String msg)
@@ -61,26 +62,26 @@ public class ActionSender
 
 	public ActionSender sendInventory()
 	{
-		ItemContainer inventory = (ItemContainer) player.getAttribute("inventory");
-		Rs2PacketBuilder packet = new Rs2PacketBuilder(206, Type.VARIABLE_SHORT);
+		Rs2PacketBuilder packet = new Rs2PacketBuilder(134, Type.VARIABLE_SHORT);
+		Container inventory = (Container) player.getAttribute("inventory");
 		packet.putShort(3214);
-		packet.putShort(inventory.getSize());
-		for (Item item : inventory.getItems())
+		for (int i = 0; i < inventory.toArray().length; i++)
 		{
-			if (item == null)
+			Item item = inventory.get(i);
+			int itemID = -1, count = 0;
+			if (item != null)
 			{
-				packet.putLEShortA(0);
-				packet.putByteC(0);
-			} else
-			{
-				packet.putLEShortA(item.getID() + 1);
-				if (item.getAmount() >= 0xff)
-				{
-					packet.putByteC(255);
-					packet.putLEInt(item.getAmount());
-				} else
-					packet.putByteC(item.getAmount());
+				itemID = item.getId();
+				count = item.getCount();
 			}
+			packet.put((byte) i);
+			packet.putShort(itemID + 1);
+			if (count > 254)
+			{
+				packet.put((byte) 255);
+				packet.putInt(count);
+			} else
+				packet.put((byte) count);
 		}
 		player.getSession().write(packet.toPacket());
 		return this;
@@ -88,29 +89,26 @@ public class ActionSender
 
 	public ActionSender sendEquipment()
 	{
-		player.getUpdateFlags().flag(Flag.APPEARANCE);
-		ItemContainer equipment = (ItemContainer) player.getAttribute("equipment");
 		Rs2PacketBuilder packet = new Rs2PacketBuilder(134, Type.VARIABLE_SHORT);
+		Container equipment = (Container) player.getAttribute("equipment");
 		packet.putShort(1688);
-		for (int i = 0; i < equipment.getItems().length; i++)
+		for (int i = 0; i < equipment.toArray().length; i++)
 		{
-			Item item = equipment.getItems()[i];
-			if (item == null)
+			Item item = equipment.get(i);
+			int itemID = -1, count = 0;
+			if (item != null)
 			{
-				packet.put((byte) i);
-				packet.putShort(0);
-				packet.put((byte) 0);
-			} else
-			{
-				packet.put((byte) i);
-				packet.putShort(item.getID() + 1);
-				if (item.getAmount() >= 0xff)
-				{
-					packet.put((byte) 255);
-					packet.putInt(item.getAmount());
-				} else
-					packet.put((byte) item.getAmount());
+				itemID = item.getId();
+				count = item.getCount();
 			}
+			packet.put((byte) i);
+			packet.putShort(itemID + 1);
+			if (count > 254)
+			{
+				packet.put((byte) 255);
+				packet.putInt(count);
+			} else
+				packet.put((byte) count);
 		}
 		player.getSession().write(packet.toPacket());
 		return this;
@@ -178,45 +176,45 @@ public class ActionSender
 
 	public ActionSender appendUpdateAppearance(Rs2PacketBuilder packet)
 	{
-		ItemContainer equipment = (ItemContainer) player.getAttribute("equipment");
+		Container equipment = (Container) player.getAttribute("equipment");
 		Rs2PacketBuilder appearance = new Rs2PacketBuilder();
 		appearance.put((Byte) player.getAttribute("gender"));
 		appearance.put((Byte) player.getAttribute("skullIcon"));
 		appearance.put((Byte) player.getAttribute("prayerIcon"));
 
-		Item hat = equipment.get(ItemContainer.HEAD_SLOT);
+		Item hat = equipment.get(Equipment.SLOT_HELM);
 		if (hat != null)
-			appearance.putShort(0x200 + hat.getID());
+			appearance.putShort(0x200 + hat.getId());
 		else
 			appearance.put((byte) 0);
 
-		Item cape = equipment.get(ItemContainer.CAPE_SLOT);
+		Item cape = equipment.get(Equipment.SLOT_CAPE);
 		if (cape != null)
-			appearance.putShort(0x200 + cape.getID());
+			appearance.putShort(0x200 + cape.getId());
 		else
 			appearance.put((byte) 0);
 
-		Item amulet = equipment.get(ItemContainer.AMULET_SLOT);
+		Item amulet = equipment.get(Equipment.SLOT_AMULET);
 		if (amulet != null)
-			appearance.putShort(0x200 + amulet.getID());
+			appearance.putShort(0x200 + amulet.getId());
 		else
 			appearance.put((byte) 0);
 
-		Item weapon = equipment.get(ItemContainer.WEAPON_SLOT);
+		Item weapon = equipment.get(Equipment.SLOT_WEAPON);
 		if (weapon != null)
-			appearance.putShort(0x200 + weapon.getID());
+			appearance.putShort(0x200 + weapon.getId());
 		else
 			appearance.put((byte) 0);
 
-		Item body = equipment.get(ItemContainer.BODY_SLOT);
+		Item body = equipment.get(Equipment.SLOT_CHEST);
 		if (body != null)
-			appearance.putShort(0x200 + body.getID());
+			appearance.putShort(0x200 + body.getId());
 		else
 			appearance.putShort(0x100 + (Integer) player.getAttribute("bodyModel"));
 
-		Item shield = equipment.get(ItemContainer.SHIELD_SLOT);
+		Item shield = equipment.get(Equipment.SLOT_SHIELD);
 		if (shield != null)
-			appearance.putShort(0x200 + shield.getID());
+			appearance.putShort(0x200 + shield.getId());
 		else
 			appearance.put((byte) 0);
 
@@ -225,9 +223,9 @@ public class ActionSender
 		else
 			appearance.put((byte) 0);
 
-		Item legs = equipment.get(ItemContainer.LEGS_SLOT);
+		Item legs = equipment.get(Equipment.SLOT_BOTTOMS);
 		if (legs != null)
-			appearance.putShort(0x200 + legs.getID());
+			appearance.putShort(0x200 + legs.getId());
 		else
 			appearance.putShort(0x100 + (Integer) player.getAttribute("legsModel"));
 
@@ -237,15 +235,15 @@ public class ActionSender
 		else
 			appearance.put((byte) 0);
 
-		Item hands = equipment.get(ItemContainer.HANDS_SLOT);
+		Item hands = equipment.get(Equipment.SLOT_GLOVES);
 		if (hands != null)
-			appearance.putShort(0x200 + hands.getID());
+			appearance.putShort(0x200 + hands.getId());
 		else
 			appearance.putShort(0x100 + (Integer) player.getAttribute("handsModel"));
 
-		Item feet = equipment.get(ItemContainer.FEET_SLOT);
+		Item feet = equipment.get(Equipment.SLOT_BOOTS);
 		if (feet != null)
-			appearance.putShort(0x200 + feet.getID());
+			appearance.putShort(0x200 + feet.getId());
 		else
 			appearance.putShort(0x100 + (Integer) player.getAttribute("feetModel"));
 
@@ -323,7 +321,6 @@ public class ActionSender
 
 	public ActionSender appendUpdateWalk(Rs2PacketBuilder packet, Npc npc)
 	{
-		System.out.println("npc walk");
 		packet.putBits(1, 1);
 		packet.putBits(2, 1);
 		packet.putBits(3, npc.getWalkDirection());

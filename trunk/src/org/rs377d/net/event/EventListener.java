@@ -23,7 +23,7 @@ import org.rs377d.net.Rs2Packet;
 
 public interface EventListener
 {
-	
+
 	public void handle(IoSession session, Rs2Packet packet, EventListenerChain chain) throws Exception;
 
 }

@@ -14,7 +14,7 @@ public class PythonImpl
 {
 
 	private static PythonInterpreter py = new PythonInterpreter();
-	
+
 	static
 	{
 		py.setOut(System.out);

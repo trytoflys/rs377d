@@ -1,41 +1,51 @@
 package org.rs377d.model.util;
 
+/**
+ * Represents a single item.
+ * 
+ * @author Graham Edgecombe
+ * 
+ */
 public class Item
 {
-	
-	private int id, amount;
-	private boolean stackable;
-	
-	public Item(int id, int amount, boolean stackable)
+
+	private int id;
+	private int count;
+
+	public Item(int id)
 	{
-		this.id = id;
-		this.amount = amount;
-		this.stackable = stackable;
+		this(id, 1);
 	}
-	
-	public int getID()
+
+	public Item(int id, int count)
+	{
+		if (count < 0)
+		{
+			throw new IllegalArgumentException("Count cannot be negative.");
+		}
+		this.id = id;
+		this.count = count;
+	}
+
+	public ItemDefinition getDefinition()
+	{
+		return ItemDefinition.forId(id);
+	}
+
+	public int getId()
 	{
 		return id;
 	}
-	
-	public void setID(int id)
+
+	public int getCount()
 	{
-		this.id = id;
+		return count;
 	}
-	
-	public int getAmount()
+
+	@Override
+	public String toString()
 	{
-		return amount;
-	}
-	
-	public void setAmount(int amount)
-	{
-		this.amount = amount;
-	}
-	
-	public boolean isStackable()
-	{
-		return stackable;
+		return Item.class.getName() + " [id=" + id + ", count=" + count + "]";
 	}
 
 }

@@ -25,8 +25,9 @@ import org.apache.mina.core.session.IoSession;
 import org.rs377d.model.Entity;
 import org.rs377d.model.npc.Npc;
 import org.rs377d.model.util.Item;
-import org.rs377d.model.util.ItemContainer;
+import org.rs377d.model.util.Container;
 import org.rs377d.model.util.EntityList;
+import org.rs377d.model.util.Container.Type;
 import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.util.ActionSender;
 
@@ -70,11 +71,21 @@ public class Player extends Entity
 		setAttribute("legsModel", 39);
 		setAttribute("feetModel", 44);
 		setAttribute("beardModel", 14);
-		setAttribute("equipment", new ItemContainer(14, false));
-		ItemContainer inventory = new ItemContainer(28, false);
-		inventory.add(new Item(4151, 1, false));
+
+		Container equipment = new Container(Type.STANDARD, 14);
+		setAttribute("equipment", equipment);
+
+		Container inventory = new Container(Type.STANDARD, 28);
+		inventory.add(new Item(1163));
+		inventory.add(new Item(1127));
+		inventory.add(new Item(1079));
+		inventory.add(new Item(4131));
+		inventory.add(new Item(1201));
+		inventory.add(new Item(6585));
+
 		setAttribute("inventory", inventory);
-		setAttribute("bank", new ItemContainer(496, true));
+
+		setAttribute("bank", new Container(Type.ALWAYS_STACK, 496));
 	}
 
 	public EntityList<Npc> getNpcList()
