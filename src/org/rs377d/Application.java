@@ -31,7 +31,6 @@ public class Application
 
 	public static void main(String[] args)
 	{
-		
 		System.setOut(new DefaultLogger(System.out));
 		System.out.println("Starting RuneScape 377 Daemon...");
 		System.out.println("Loading Python scripts...");
