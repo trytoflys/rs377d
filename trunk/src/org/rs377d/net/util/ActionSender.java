@@ -48,6 +48,7 @@ public class ActionSender
 			setSidebarInterface(i, sidebarInterfaces[i]);
 		sendWelcomeScreen();
 		sendInventory();
+		sendEquipment();
 		return sendMessage("Welcome to RuneScape.");
 	}
 
@@ -60,7 +61,7 @@ public class ActionSender
 	public ActionSender sendInventory()
 	{
 		ItemContainer inventory = (ItemContainer) player.getAttribute("inventory");
-		inventory.add(new Item(4151, 1, false));
+		inventory.add(new Item(1319, 1, false));
 		Rs2PacketBuilder packet = new Rs2PacketBuilder(206, Type.VARIABLE_SHORT);
 		packet.putShort(3214);
 		packet.putShort(inventory.getSize());
@@ -75,6 +76,37 @@ public class ActionSender
 				packet.putLEInt(item.getAmount());
 			} else
 				packet.putByteC(item.getAmount());
+		}
+		player.getSession().write(packet.toPacket());
+		return this;
+	}
+
+	public ActionSender sendEquipment()
+	{
+		ItemContainer equipment = (ItemContainer) player.getAttribute("equipment");
+		equipment.set(ItemContainer.WEAPON_SLOT, new Item(4151, 1, false));
+		equipment.set(ItemContainer.HEAD_SLOT, new Item(1163, 1, false));
+		equipment.set(ItemContainer.BODY_SLOT, new Item(1127, 1, false));
+		equipment.set(ItemContainer.LEGS_SLOT, new Item(1079, 1, false));
+		equipment.set(ItemContainer.SHIELD_SLOT, new Item(1201, 1, false));
+		equipment.set(ItemContainer.FEET_SLOT, new Item(4131, 1, false));
+		equipment.set(ItemContainer.AMULET_SLOT, new Item(6585, 1, false));
+
+		Rs2PacketBuilder packet = new Rs2PacketBuilder(134, Type.VARIABLE_SHORT);
+		packet.putShort(1688);
+		for (int i = 0; i < equipment.getItems().length; i++)
+		{
+			Item item = equipment.getItems()[i];
+			if (item == null)
+				continue;
+			packet.put((byte) i);
+			packet.putShort(item.getID() + 1);
+			if (item.getAmount() >= 0xff)
+			{
+				packet.put((byte) 255);
+				packet.putInt(item.getAmount());
+			} else
+				packet.put((byte) item.getAmount());
 		}
 		player.getSession().write(packet.toPacket());
 		return this;
@@ -142,22 +174,79 @@ public class ActionSender
 
 	public ActionSender appendUpdateAppearance(Rs2PacketBuilder packet)
 	{
+		ItemContainer equipment = (ItemContainer) player.getAttribute("equipment");
 		Rs2PacketBuilder appearance = new Rs2PacketBuilder();
 		appearance.put((Byte) player.getAttribute("gender"));
 		appearance.put((Byte) player.getAttribute("skullIcon"));
 		appearance.put((Byte) player.getAttribute("prayerIcon"));
-		appearance.put((byte) 0); // hat
-		appearance.put((byte) 0); // cape
-		appearance.put((byte) 0); // amulet
-		appearance.put((byte) 0); // weapon
-		appearance.putShort(0x100 + (Integer) player.getAttribute("bodyModel")); // body
-		appearance.put((byte) 0); // shield
-		appearance.putShort(0x100 + (Integer) player.getAttribute("armsModel")); // arms
-		appearance.putShort(0x100 + (Integer) player.getAttribute("legsModel")); // legs
-		appearance.putShort(0x100 + (Integer) player.getAttribute("headModel")); // head
-		appearance.putShort(0x100 + (Integer) player.getAttribute("handsModel")); // hands
-		appearance.putShort(0x100 + (Integer) player.getAttribute("feetModel")); // feet
+
+		Item hat = equipment.get(ItemContainer.HEAD_SLOT);
+		if (hat != null)
+			appearance.putShort(0x200 + hat.getID());
+		else
+			appearance.put((byte) 0);
+
+		Item cape = equipment.get(ItemContainer.CAPE_SLOT);
+		if (cape != null)
+			appearance.putShort(0x200 + cape.getID());
+		else
+			appearance.put((byte) 0);
+
+		Item amulet = equipment.get(ItemContainer.AMULET_SLOT);
+		if (amulet != null)
+			appearance.putShort(0x200 + amulet.getID());
+		else
+			appearance.put((byte) 0);
+
+		Item weapon = equipment.get(ItemContainer.WEAPON_SLOT);
+		if (weapon != null)
+			appearance.putShort(0x200 + weapon.getID());
+		else
+			appearance.put((byte) 0);
+
+		Item body = equipment.get(ItemContainer.BODY_SLOT);
+		if (body != null)
+			appearance.putShort(0x200 + body.getID());
+		else
+			appearance.putShort(0x100 + (Integer) player.getAttribute("bodyModel"));
+
+		Item shield = equipment.get(ItemContainer.SHIELD_SLOT);
+		if (shield != null)
+			appearance.putShort(0x200 + shield.getID());
+		else
+			appearance.put((byte) 0);
+
+		if (body == null)
+			appearance.putShort(0x100 + (Integer) player.getAttribute("armsModel"));
+		else
+			appearance.put((byte) 0);
+
+		Item legs = equipment.get(ItemContainer.LEGS_SLOT);
+		if (legs != null)
+			appearance.putShort(0x200 + legs.getID());
+		else
+			appearance.putShort(0x100 + (Integer) player.getAttribute("legsModel"));
+
+		// todo full helm/mask check - head atm is invisible with simple hat
+		if (hat == null)
+			appearance.putShort(0x100 + (Integer) player.getAttribute("headModel"));
+		else
+			appearance.put((byte) 0);
+
+		Item hands = equipment.get(ItemContainer.HANDS_SLOT);
+		if (hands != null)
+			appearance.putShort(0x200 + hands.getID());
+		else
+			appearance.putShort(0x100 + (Integer) player.getAttribute("handsModel"));
+
+		Item feet = equipment.get(ItemContainer.FEET_SLOT);
+		if (feet != null)
+			appearance.putShort(0x200 + feet.getID());
+		else
+			appearance.putShort(0x100 + (Integer) player.getAttribute("feetModel"));
+
 		appearance.put((byte) 0);
+
 		appearance.put((Byte) player.getAttribute("hairColor"));
 		appearance.put((Byte) player.getAttribute("bodyColor"));
 		appearance.put((Byte) player.getAttribute("legsColor"));
