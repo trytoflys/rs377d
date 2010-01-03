@@ -21,6 +21,8 @@ package org.rs377d.net.util;
 import org.rs377d.model.npc.Npc;
 import org.rs377d.model.player.Player;
 import org.rs377d.model.util.ChatMessage;
+import org.rs377d.model.util.Item;
+import org.rs377d.model.util.ItemContainer;
 import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.Rs2PacketBuilder;
 import org.rs377d.net.Rs2Packet.Type;
@@ -45,12 +47,36 @@ public class ActionSender
 		for (int i = 0; i < sidebarInterfaces.length; i++)
 			setSidebarInterface(i, sidebarInterfaces[i]);
 		sendWelcomeScreen();
+		sendInventory();
 		return sendMessage("Welcome to RuneScape.");
 	}
 
 	public ActionSender sendMessage(String msg)
 	{
 		player.getSession().write(new Rs2PacketBuilder(63, Type.VARIABLE).putRs2String(msg).toPacket());
+		return this;
+	}
+
+	public ActionSender sendInventory()
+	{
+		ItemContainer inventory = (ItemContainer) player.getAttribute("inventory");
+		inventory.add(new Item(4151, 1, false));
+		Rs2PacketBuilder packet = new Rs2PacketBuilder(206, Type.VARIABLE_SHORT);
+		packet.putShort(3214);
+		packet.putShort(inventory.getSize());
+		for (Item item : inventory.getItems())
+		{
+			if (item == null)
+				continue;
+			packet.putLEShortA(item.getID() + 1);
+			if (item.getAmount() >= 0xff)
+			{
+				packet.putByteC(255);
+				packet.putLEInt(item.getAmount());
+			} else
+				packet.putByteC(item.getAmount());
+		}
+		player.getSession().write(packet.toPacket());
 		return this;
 	}
 
