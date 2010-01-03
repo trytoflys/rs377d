@@ -5,6 +5,7 @@ public class ItemContainer
 
 	private Item[] items;
 	private boolean stacking;
+	public static int HEAD_SLOT = 0, CAPE_SLOT = 1, AMULET_SLOT = 2, WEAPON_SLOT = 3, BODY_SLOT = 4, SHIELD_SLOT = 5, LEGS_SLOT = 7, HANDS_SLOT = 9, FEET_SLOT = 10, RING_SLOT = 12, ARROWS_SLOT = 13;
 
 	public ItemContainer(int capacity, boolean stacking)
 	{
@@ -53,6 +54,11 @@ public class ItemContainer
 		items[oldSlot] = items[newSlot];
 		items[newSlot] = swap;
 	}
+	
+	public Item get(int index)
+	{
+		return items[index];
+	}
 
 	public void set(int index, Item item)
 	{
@@ -63,7 +69,7 @@ public class ItemContainer
 	{
 		return freeSlot() == 0;
 	}
-	
+
 	public int getSize()
 	{
 		int size = 0;
@@ -90,7 +96,7 @@ public class ItemContainer
 	{
 		return search(null);
 	}
-	
+
 	public Item[] getItems()
 	{
 		return items;

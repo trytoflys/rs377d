@@ -69,10 +69,11 @@ public class Player extends Entity
 		setAttribute("legsModel", 39);
 		setAttribute("feetModel", 44);
 		setAttribute("beardModel", 14);
+		setAttribute("equipment", new ItemContainer(14, false));
 		setAttribute("inventory", new ItemContainer(28, false));
 		setAttribute("bank", new ItemContainer(496, true));
 	}
-	
+
 	public EntityList<Npc> getNpcList()
 	{
 		return npcList;
