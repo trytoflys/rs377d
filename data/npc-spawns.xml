@@ -1,0 +1,33 @@
+<NPC-SPAWNS>
+
+	<SPAWN ID="1">
+		<STATS
+			HEALTH="7"
+			MAX_HIT="1"
+			ATTACK_SPEED="3"
+		/>
+		<POSITION
+			X="3201"
+			Y="3201"
+			Z="0"
+			X_RANGE="1"
+			Y_RANGE="1"
+		/>
+	</SPAWN>
+	
+		<SPAWN ID="1">
+		<STATS
+			HEALTH="7"
+			MAX_HIT="1"
+			ATTACK_SPEED="3"
+		/>
+		<POSITION
+			X="3202"
+			Y="3200"
+			Z="0"
+			X_RANGE="1"
+			Y_RANGE="1"
+		/>
+	</SPAWN>
+
+</NPC-SPAWNS>

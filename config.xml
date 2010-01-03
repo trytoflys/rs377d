@@ -27,6 +27,9 @@
 	<!--
 	  * Server entity configuration block.
 	  *
+	  * NPC_SPAWN_FILE:
+	  * 	The file which NPC spawn data is loaded from.
+	  *
 	  * MAX_PLAYERS:
 	  * 	The maximum amount of players that will be allowed into the server.
 	  *
@@ -39,6 +42,7 @@
 	  * 	who do not have location coordinates set for them.
 	  -->
 	<ENTITY
+		NPC_SPAWN_FILE = "./data/npc-spawns.xml"
 		MAX_PLAYERS="2000"
 		MAX_NPCS="2000"
 		DEFAULT_X="3200"

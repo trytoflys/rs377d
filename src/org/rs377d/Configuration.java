@@ -37,5 +37,6 @@ public class Configuration
 	public static File SCRIPTS_DIR = new File("./scripts");
 	public static String RSA_KEY_FILE = new String("./data/private.key");
 	public static String ITEM_DEFINITIONS_FILE = new String("./data/itemDefinitions");
+	public static String NPC_SPAWN_FILE = "./data/npc-spawns.xml";
 
 }

@@ -1,4 +1,4 @@
-package org.rs377d.net.util;
+package org.rs377d.util;
 
 import java.io.File;
 import java.util.StringTokenizer;
@@ -37,6 +37,7 @@ public class ConfigurationParser
 		Element entityElement = (Element) doc.getElementsByTagName("ENTITY").item(0);
 		if (entityElement != null)
 		{
+			Configuration.NPC_SPAWN_FILE = entityElement.getAttribute("NPC_SPAWN_FILE");
 			Configuration.MAX_PLAYERS = Integer.parseInt(entityElement.getAttribute("MAX_PLAYERS"));
 			Configuration.MAX_NPCS = Integer.parseInt(entityElement.getAttribute("MAX_NPCS"));
 			Configuration.DEFAULT_X = Integer.parseInt(entityElement.getAttribute("DEFAULT_X"));

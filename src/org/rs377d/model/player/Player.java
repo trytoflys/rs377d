@@ -18,9 +18,6 @@
 
 package org.rs377d.model.player;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.mina.core.session.IoSession;
 import org.rs377d.model.Entity;
 import org.rs377d.model.npc.Npc;
@@ -41,7 +38,6 @@ public class Player extends Entity
 	private Rs2Packet cachedUpdateBlock;
 	private EntityList<Player> playerList = new EntityList<Player>(256);
 	private EntityList<Npc> npcList = new EntityList<Npc>(256);
-	private Map<String, Object> attributeMap = new HashMap<String, Object>();
 
 	public Player(IoSession session, String username, String password)
 	{
@@ -96,16 +92,6 @@ public class Player extends Entity
 	public EntityList<Player> getPlayerList()
 	{
 		return playerList;
-	}
-
-	public void setAttribute(String name, Object attribute)
-	{
-		attributeMap.put(name, attribute);
-	}
-
-	public Object getAttribute(String name)
-	{
-		return attributeMap.get(name);
 	}
 
 	public void setCachedUpdateBlock(Rs2Packet cachedUpdateBlock)
