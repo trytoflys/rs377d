@@ -379,7 +379,6 @@ public class Container
 	public static boolean transfer(Container from, Container to, int fromSlot, int id)
 	{
 		Item fromItem = from.get(fromSlot);
-		System.out.println(fromItem);
 		if (fromItem == null || fromItem.getId() != id)
 		{
 			System.out.println("item not found");

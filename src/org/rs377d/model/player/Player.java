@@ -78,7 +78,7 @@ public class Player extends Entity
 		inventory.add(new Item(4131));
 		inventory.add(new Item(1201));
 		inventory.add(new Item(6585));
-
+		inventory.add(new Item(4151));
 		setAttribute("inventory", inventory);
 
 		setAttribute("bank", new Container(Type.ALWAYS_STACK, 496));
