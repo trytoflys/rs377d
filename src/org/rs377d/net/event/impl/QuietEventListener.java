@@ -29,7 +29,7 @@ public class QuietEventListener implements EventListener
 	@Override
 	public void handle(IoSession session, Rs2Packet packet, EventListenerChain chain) throws Exception
 	{
-		
+
 	}
 
 }

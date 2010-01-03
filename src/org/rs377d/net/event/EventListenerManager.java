@@ -22,8 +22,8 @@ import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.event.impl.ChatMuteFilter;
 import org.rs377d.net.event.impl.ChatEventListener;
 import org.rs377d.net.event.impl.DefaultEventListener;
-import org.rs377d.net.event.impl.EquipEventFilter;
 import org.rs377d.net.event.impl.EquipEventListener;
+import org.rs377d.net.event.impl.ItemMoveEventListener;
 import org.rs377d.net.event.impl.QuietEventListener;
 import org.rs377d.net.event.impl.UnequipEventFilter;
 import org.rs377d.net.event.impl.UnequipEventListener;
@@ -44,42 +44,46 @@ public class EventListenerManager
 	{
 		EventListenerChain defaultChain = new EventListenerChain();
 		defaultChain.add(new DefaultEventListener());
-		
+
 		EventListenerChain quietChain = new EventListenerChain();
 		quietChain.add(new QuietEventListener());
-		
+
 		EventListenerChain chatChain = new EventListenerChain();
 		chatChain.add(new ChatMuteFilter());
 		chatChain.add(new ChatEventListener());
-		
+
 		EventListenerChain walkChain = new EventListenerChain();
 		walkChain.add(new WalkingEventFilter());
 		walkChain.add(new WalkingEventListener());
-		
+
 		EventListenerChain equipChain = new EventListenerChain();
-		equipChain.add(new EquipEventFilter());
 		equipChain.add(new EquipEventListener());
-		
+
 		EventListenerChain unequipChain = new EventListenerChain();
 		unequipChain.add(new UnequipEventFilter());
 		unequipChain.add(new UnequipEventListener());
-		
+
+		EventListenerChain moveItemChain = new EventListenerChain();
+		moveItemChain.add(new ItemMoveEventListener());
+
 		chains[40] = quietChain;
 		chains[248] = quietChain;
 		chains[19] = quietChain;
 		chains[140] = quietChain;
 		chains[187] = quietChain;
-		
+
 		chains[49] = chatChain;
-		
+
 		chains[213] = walkChain;
 		chains[28] = walkChain;
 		chains[247] = walkChain;
-		
+
 		chains[24] = equipChain;
-		
+
 		chains[3] = unequipChain;
-		
+
+		chains[123] = moveItemChain;
+
 		for (int i = 0; i < chains.length; i++)
 			if (chains[i] == null)
 				chains[i] = defaultChain;

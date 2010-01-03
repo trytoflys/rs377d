@@ -20,14 +20,14 @@ package org.rs377d.util;
 
 public class DefaultTimer
 {
-	
+
 	private long cachedTime = System.currentTimeMillis();
-	
+
 	public void reset()
 	{
 		cachedTime = System.currentTimeMillis();
 	}
-	
+
 	public long elapsed()
 	{
 		return System.currentTimeMillis() - cachedTime;

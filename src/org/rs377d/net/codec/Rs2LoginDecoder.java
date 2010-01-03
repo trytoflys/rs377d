@@ -63,7 +63,7 @@ public class Rs2LoginDecoder extends CumulativeProtocolDecoder
 			long key = random.nextLong();
 			session.setAttribute("serverKey", key);
 			session.write(new Rs2PacketBuilder().put(INITIAL_RESPONSE).put((byte) responseCode).putLong(key).toPacket());
-			
+
 			session.setAttribute("loginStage", LoginStage.INFO_BLOCK);
 			return true;
 		case INFO_BLOCK:

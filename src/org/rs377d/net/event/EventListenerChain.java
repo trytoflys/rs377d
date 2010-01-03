@@ -20,7 +20,7 @@ package org.rs377d.net.event;
 
 public class EventListenerChain
 {
-	
+
 	private int offset = 0;
 	private EventListener[] chain = new EventListener[32];
 
@@ -33,7 +33,7 @@ public class EventListenerChain
 	{
 		chain[offset++] = listener;
 	}
-	
+
 	public boolean hasNext()
 	{
 		return chain[offset + 1] != null;
