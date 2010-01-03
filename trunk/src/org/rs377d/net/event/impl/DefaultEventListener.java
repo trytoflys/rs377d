@@ -31,7 +31,7 @@ public class DefaultEventListener implements EventListener
 	public void handle(IoSession session, Rs2Packet packet, EventListenerChain chain)
 	{
 		Player player = (Player) session.getAttribute("player");
-		System.out.println("Unhandled packet for player \"" + player.getUsername() + "\" [opcode=" + packet.getOpcode() + " size=" + packet.getLength() + "]");
+		System.out.println("Unhandled packet for player \"" + player.getUsername() + "\" [opcode=" + packet.getOpcode() + " size=" + packet.getLength() + " hexdump=" + packet.getPayload().getHexDump() + "]");
 	}
 
 }
