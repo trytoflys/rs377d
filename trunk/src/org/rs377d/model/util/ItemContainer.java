@@ -42,6 +42,26 @@ public class ItemContainer
 			set(slot, null);
 	}
 
+	public void remove(int index, boolean all)
+	{
+		Item item = items[index];
+		if (item == null)
+			return;
+		if (item.isStackable() || stacking && item.getAmount() > 1 && !all)
+			item.setAmount(item.getAmount() - 1);
+		else
+			set(index, null);
+	}
+
+	public boolean contains(int id)
+	{
+		for (int i = 0; i < items.length; i++)
+			if (items[i] != null)
+				if (items[i].getID() == id)
+					return true;
+		return false;
+	}
+
 	public void clear()
 	{
 		for (int i = 0; i < items.length; i++)
@@ -54,7 +74,7 @@ public class ItemContainer
 		items[oldSlot] = items[newSlot];
 		items[newSlot] = swap;
 	}
-	
+
 	public Item get(int index)
 	{
 		return items[index];
@@ -85,6 +105,15 @@ public class ItemContainer
 			if (items[i] == item)
 				return i;
 		return -1;
+	}
+
+	public Item search(int id)
+	{
+		for (int i = 0; i < items.length; i++)
+			if (items[i] != null)
+				if (items[i].getID() == id)
+					return items[i];
+		return null;
 	}
 
 	public boolean isFull()

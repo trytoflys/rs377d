@@ -22,7 +22,11 @@ import org.rs377d.net.Rs2Packet;
 import org.rs377d.net.event.impl.ChatMuteFilter;
 import org.rs377d.net.event.impl.ChatEventListener;
 import org.rs377d.net.event.impl.DefaultEventListener;
+import org.rs377d.net.event.impl.EquipEventFilter;
+import org.rs377d.net.event.impl.EquipEventListener;
 import org.rs377d.net.event.impl.QuietEventListener;
+import org.rs377d.net.event.impl.UnequipEventFilter;
+import org.rs377d.net.event.impl.UnequipEventListener;
 import org.rs377d.net.event.impl.WalkingEventFilter;
 import org.rs377d.net.event.impl.WalkingEventListener;
 
@@ -52,6 +56,14 @@ public class EventListenerManager
 		walkChain.add(new WalkingEventFilter());
 		walkChain.add(new WalkingEventListener());
 		
+		EventListenerChain equipChain = new EventListenerChain();
+		equipChain.add(new EquipEventFilter());
+		equipChain.add(new EquipEventListener());
+		
+		EventListenerChain unequipChain = new EventListenerChain();
+		unequipChain.add(new UnequipEventFilter());
+		unequipChain.add(new UnequipEventListener());
+		
 		chains[40] = quietChain;
 		chains[248] = quietChain;
 		chains[19] = quietChain;
@@ -63,6 +75,10 @@ public class EventListenerManager
 		chains[213] = walkChain;
 		chains[28] = walkChain;
 		chains[247] = walkChain;
+		
+		chains[24] = equipChain;
+		
+		chains[3] = unequipChain;
 		
 		for (int i = 0; i < chains.length; i++)
 			if (chains[i] == null)
